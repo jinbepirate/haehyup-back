@@ -10,6 +10,8 @@
     "build": "babel src -d build --ignore src/public",
     "dev": "cross-env NODE_ENV=development nodemon",
     "watch": "tsc --watch"
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "watch": "tsc --watch"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",
@@ -19,16 +21,19 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
-    "@types/express": "^4.17.21",
-    "axios": "^1.7.2",
     "bcrypt": "^5.1.1",
+    "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
+    "express-session": "^1.18.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.0",
+    "morgan": "^1.10.0",
     "pug": "^3.0.2",
     "socket.io": "^4.7.5",
+    "@types/express": "^4.17.21",
     "ts-node": "^10.9.2",
     "validator": "^13.12.0",
     "ws": "^8.2.3"
