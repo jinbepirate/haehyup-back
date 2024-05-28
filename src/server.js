@@ -1,6 +1,5 @@
 import express from "express";
 import axios from "axios";
-import axios from "axios";
 import { Server as SocketIO } from "socket.io";
 import https from "https";
 import fs from "fs";
@@ -13,18 +12,10 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 const cors = require("cors");
 
-const usersRouter = require('./routes/api/users');
 ////////
 const PORT = process.env.PORT || 4000;
 
 dotenv.config();
-
-mongoose
-  .connect(
-    process.env.MONGO_URI
-  )
-  .then(() => console.log("Connected Successfully"))
-  .catch((err) => console.log(err));
 
 // router
 const usersRouter = require("./routes/api/users.js");
@@ -34,18 +25,17 @@ const studyRecordRouter = require("./routes/api/studyRecord");
 // const roomsRouter = require("./routes/api/rooms");
 
 const app = express();
-app.use(cors({
-  origin: true
-})); //모든 접근 허용 
 
-// app.set("view engine", "pug");
-// app.set("views", process.cwd() + "/src/views");
+
+app.set("view engine", "pug");
+app.set("views", process.cwd() + "/src/views");
 
 app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(process.cwd() + "/src/public"));
+app.use(cors()); //모든 접근 허용
 
 app.use(
   session({
@@ -83,11 +73,13 @@ app.use("/api/studyRecord", studyRecordRouter);
 ////
 app.use('/users', usersRouter);
 ////
-////
-app.use('/users', usersRouter);
-////
+
 app.get("/", (req, res) => {
-  res.json("home");
+  res.render("home");
+});
+
+app.get("/*", (req, res) => {
+  res.redirect("/");
 });
 
 //kakao login
@@ -95,8 +87,8 @@ app.get("/", (req, res) => {
 // const KAKAO_REDIRECT_URI = 'http://1.231.165.73:5173/oauth/callback/kakao';
 
 // SSL 인증서와 키 파일을 읽어옵니다.
-const privateKey = fs.readFileSync("./private3.pem", "utf8");
-const certificate = fs.readFileSync("./public3.pem", "utf8");
+const privateKey = fs.readFileSync("./private.pem", "utf8");
+const certificate = fs.readFileSync("./public.pem", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 
 
@@ -104,7 +96,7 @@ const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 const wsServer = new SocketIO(httpsServer, {
   cors: {
-    origin: "https://172.16.1.87:4000",  // 허용할 도메인 설정
+    origin: "https://172.16.1.84:4000",  // 허용할 도메인 설정
     methods: ["GET", "POST"],
     credentials: true
   }
