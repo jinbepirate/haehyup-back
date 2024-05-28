@@ -1,5 +1,7 @@
 const socket = io("https://172.16.1.84:4000");
 
+
+
 const myFace = document.querySelector("#myFace");
 const muteBtn = document.querySelector("#mute");
 const muteIcon = muteBtn.querySelector(".muteIcon");
@@ -22,6 +24,10 @@ unCameraIcon.classList.add(HIDDEN_CN);
 let roomName = "";
 let nickname = "";
 let peopleInRoom = 1;
+
+
+
+
 
 let pcObj = {
   // remoteSocketId: pc

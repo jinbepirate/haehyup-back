@@ -1,21 +1,45 @@
 import express from "express";
 import axios from "axios";
 import { Server as SocketIO } from "socket.io";
-import http from "http";
 import https from "https";
 import fs from "fs";
 import cors from "cors"
+import 'regenerator-runtime/runtime';
 
+/////////////////
+const mongoose = require('mongoose');
+const dotenv = require('dotenv');
+
+const usersRouter = require('./routes/api/users');
+////////
 const PORT = process.env.PORT || 4000;
 
 const app = express();
 
-app.use(cors()); //모든 접근 허용 
+app.use(cors()); //모든 접근 허용
+app.use(express.json());
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
 
+/////////////////
+
+dotenv.config(); 
+
+mongoose
+  .connect(
+    process.env.MONGO_URI
+  )
+  .then(() => console.log("Connected Successful"))
+  .catch(err => console.log(err));
+
+
+
+/////////////////
 app.use("/public", express.static(process.cwd() + "/src/public"));
 
+////
+app.use('/users', usersRouter);
+////
 app.get("/", (req, res) => {
   res.render("home");
 });
@@ -24,12 +48,16 @@ app.get("/*", (req, res) => {
   res.redirect("/");
 });
 
+//kakao login
+// const KAKAO_REST_API_KEY = 'a457df9dcc34fd904cdbc9f52a5d5d3d';
+// const KAKAO_REDIRECT_URI = 'http://1.231.165.73:5173/oauth/callback/kakao';
+
 // SSL 인증서와 키 파일을 읽어옵니다.
 const privateKey = fs.readFileSync("./private.pem", "utf8");
 const certificate = fs.readFileSync("./public.pem", "utf8");
 const credentials = { key: privateKey, cert: certificate };
 
-const httpServer = http.createServer(app);
+
 const httpsServer = https.createServer(credentials, app);
 const wsServer = new SocketIO(httpsServer, {
   cors: {
@@ -38,6 +66,44 @@ const wsServer = new SocketIO(httpsServer, {
     credentials: true
   }
 });
+
+// kakao login
+// app.get('/oauth/callback/kakao', async (req, res) => {
+//   const { code } = req.query;
+
+//   try {
+//     const tokenResponse = await axios.post(
+//       'https://kauth.kakao.com/oauth/token',
+//       {},
+//       {
+//         params: {
+//           grant_type: 'authorization_code',
+//           client_id: KAKAO_REST_API_KEY,
+//           redirect_uri: KAKAO_REDIRECT_URI,
+//           code
+//         },
+//         headers: {
+//           'Content-Type': 'application/x-www-form-urlencoded'
+//         }
+//       }
+//     );
+
+//     const { access_token } = tokenResponse.data;
+
+//     const userResponse = await axios.get('https://kapi.kakao.com/v2/user/me', {
+//       headers: {
+//         Authorization: `Bearer ${access_token}`
+//       }
+//     });
+
+//     const userData = userResponse.data;
+//     res.json(userData);
+
+//   } catch (error) {
+//     console.error('Error fetching Kakao token or user data:', error);
+//     res.status(500).json({ error: 'Failed to fetch Kakao token or user data' });
+//   }
+// });
 
 let roomObjArr = [];
 const MAXIMUM = 5;
