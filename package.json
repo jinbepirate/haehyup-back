@@ -10,6 +10,8 @@
     "build": "babel src -d build --ignore src/public",
     "dev": "cross-env NODE_ENV=development nodemon",
     "watch": "tsc --watch"
+    "dev": "cross-env NODE_ENV=development nodemon",
+    "watch": "tsc --watch"
   },
   "devDependencies": {
     "@babel/cli": "^7.16.8",
