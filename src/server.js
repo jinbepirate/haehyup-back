@@ -83,8 +83,8 @@ app.get("/*", (req, res) => {
 });
 
 //kakao login
-// const KAKAO_REST_API_KEY = 'a457df9dcc34fd904cdbc9f52a5d5d3d';
-// const KAKAO_REDIRECT_URI = 'http://1.231.165.73:5173/oauth/callback/kakao';
+// const KAKAO_REST_API_KEY = 
+// const KAKAO_REDIRECT_URI = 
 
 // SSL 인증서와 키 파일을 읽어옵니다.
 const privateKey = fs.readFileSync("./private.pem", "utf8");
@@ -102,43 +102,6 @@ const wsServer = new SocketIO(httpsServer, {
   }
 });
 
-// kakao login
-// app.get('/oauth/callback/kakao', async (req, res) => {
-//   const { code } = req.query;
-
-//   try {
-//     const tokenResponse = await axios.post(
-//       'https://kauth.kakao.com/oauth/token',
-//       {},
-//       {
-//         params: {
-//           grant_type: 'authorization_code',
-//           client_id: KAKAO_REST_API_KEY,
-//           redirect_uri: KAKAO_REDIRECT_URI,
-//           code
-//         },
-//         headers: {
-//           'Content-Type': 'application/x-www-form-urlencoded'
-//         }
-//       }
-//     );
-
-//     const { access_token } = tokenResponse.data;
-
-//     const userResponse = await axios.get('https://kapi.kakao.com/v2/user/me', {
-//       headers: {
-//         Authorization: `Bearer ${access_token}`
-//       }
-//     });
-
-//     const userData = userResponse.data;
-//     res.json(userData);
-
-//   } catch (error) {
-//     console.error('Error fetching Kakao token or user data:', error);
-//     res.status(500).json({ error: 'Failed to fetch Kakao token or user data' });
-//   }
-// });
 
 // kakao login
 // app.get('/oauth/callback/kakao', async (req, res) => {
