@@ -70,8 +70,8 @@ app.use("/api/studyRecord", studyRecordRouter);
 // app.use("/api/rooms", roomsRouter);
 
 ////
-app.use('/users', usersRouter);
-app.use('/memo',memoRouter);
+app.use('/api/users', usersRouter);
+app.use('/api/memo',memoRouter);
 ////
 
 app.get("/", (req, res) => {

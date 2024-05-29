@@ -60,12 +60,12 @@ router.get('/me', auth.authenticate, auth.loginRequired, async (req, res) => {
   try {
     const user = await User.findById(req.user._id).select('-password -__v');
     if (!user) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: '로그인을 먼저 해주세요.' });
     }
     res.status(200).json(user);
   } catch (err) {
     console.error(err);
-    res.status(400).json({ message: 'Error fetching user information', error: err.message });
+    res.status(400).json({ message: '올바르지 않은 접근입니다.', error: err.message });
   }
 });
 
