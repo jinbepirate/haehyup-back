@@ -22,6 +22,7 @@ const usersRouter = require("./routes/api/users.js");
 const themesRouter = require("./routes/api/themes.js");
 const memoRouter = require("./routes/api/memo");
 const studyRecordRouter = require("./routes/api/studyRecord");
+const myPageRouter = require("./routes/api/myPage");
 // const roomsRouter = require("./routes/api/rooms");
 
 const app = express();
@@ -68,6 +69,7 @@ app.use("/api/themes", themesRouter);
 
 app.use("/api/studyRecord", studyRecordRouter);
 // app.use("/api/rooms", roomsRouter);
+app.use("/api/myPage", myPageRouter);
 
 ////
 app.use('/users', usersRouter);
@@ -78,9 +80,9 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-app.get("/*", (req, res) => {
-  res.redirect("/");
-});
+// app.get("/*", (req, res) => {
+//   res.redirect("/");
+// });
 
 //kakao login
 // const KAKAO_REST_API_KEY = 
