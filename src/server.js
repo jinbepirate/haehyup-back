@@ -9,8 +9,10 @@ import 'regenerator-runtime/runtime';
 /////////////////
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
+const serverHost = "https://192.168.219.101"
 
 const usersRouter = require('./routes/api/users');
+// const seaRouter = require('./routes/api/sea');
 ////////
 const PORT = process.env.PORT || 4000;
 
@@ -27,7 +29,7 @@ dotenv.config();
 
 mongoose
   .connect(
-    process.env.MONGO_URI
+    'mongodb+srv://liarcrown15:admin1234@haehyup.njuy1y4.mongodb.net/?retryWrites=true&w=majority&appName=Haehyup'
   )
   .then(() => console.log("Connected Successful"))
   .catch(err => console.log(err));
@@ -39,14 +41,27 @@ app.use("/public", express.static(process.cwd() + "/src/public"));
 
 ////
 app.use('/users', usersRouter);
+// app.use('/sea',seaRouter);
 ////
-app.get("/", (req, res) => {
-  res.render("home");
+app.get("/0", (req, res) => {
+  res.render("sea")
 });
 
-app.get("/*", (req, res) => {
-  res.redirect("/");
+app.get("/1", (req, res) => {
+  res.render("forest");
 });
+
+app.get("/2", (req, res) => {
+  res.render("rain");
+});
+
+// app.get('/:id', (req, res)=>{
+//   res.render('home', {sampleId: req.params.id})
+// })
+
+// app.get("/*", (req, res) => {
+//   res.redirect("/");
+// });
 
 //kakao login
 // const KAKAO_REST_API_KEY = 'a457df9dcc34fd904cdbc9f52a5d5d3d';
@@ -61,7 +76,9 @@ const credentials = { key: privateKey, cert: certificate };
 const httpsServer = https.createServer(credentials, app);
 const wsServer = new SocketIO(httpsServer, {
   cors: {
-    origin: "https://172.16.1.84:4000",  // 허용할 도메인 설정
+    origin: `${serverHost}:4000`,  // 허용할 도메인 설정
+    // origin: "*",  // 허용할 도메인 설정
+    // origin: "https://172.16.1.238:5177",  // 허용할 도메인 설정
     methods: ["GET", "POST"],
     credentials: true
   }
@@ -146,7 +163,6 @@ wsServer.on("connection", (socket) => {
       nickname,
     });
     ++targetRoomObj.currentNum;
-
     socket.join(roomName);
     socket.emit("accept_join", targetRoomObj.users);
   });
@@ -195,5 +211,5 @@ wsServer.on("connection", (socket) => {
 });
 
 const handleListen = () =>
-  console.log(`✅ Listening on https://172.16.1.84:${PORT}`);
+  console.log(`✅ Listening on ${serverHost}:${PORT}`);
 httpsServer.listen(PORT, handleListen);
