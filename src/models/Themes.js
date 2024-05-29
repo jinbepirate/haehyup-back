@@ -9,8 +9,7 @@ const themeSchema = new mongoose.Schema({
   
 });
 
-themeSchema.set('toJSON', {virtuals: true});
-themeSchema.set('toObject', {virtuals: true});
+
 
 
 const Theme = mongoose.model('Theme', themeSchema);

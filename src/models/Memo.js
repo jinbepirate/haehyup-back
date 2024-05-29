@@ -9,14 +9,7 @@ const memoSchema = new mongoose.Schema({
   timestamps: true
 });
 
-// memoSchema.set('toJSON', {virtuals: true});
-// memoSchema.set('toObject', {virtuals: true});
 
-//  memoSchema.virtual('User', {
-//   ref: 'User',
-//   localField: '_id',
-//   foreignField: 'memo',
-// });
 
 const Memo = mongoose.model('Memo', memoSchema);
 module.exports = Memo;

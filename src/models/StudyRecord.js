@@ -10,13 +10,7 @@ const studyRecordSchema = new mongoose.Schema({
   timestamps: true,
 });
 
-studyRecordSchema.set('toJSON', {virtuals: true});
-studyRecordSchema.set('toObject', {virtuals: true});
-// studyRecordSchema.virtual('User', {
-//   ref: 'User',
-//   localField: '_id',
-//   foreignField: 'studyRecord',
-// });
+
 
 
 
