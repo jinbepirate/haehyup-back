@@ -64,14 +64,14 @@ mongoose
 
 /////////////////
 app.use("/public", express.static(process.cwd() + "/src/public"));
-app.use("/api/users", usersRouter);
 app.use("/api/themes", themesRouter);
-app.use("/api/memo", memoRouter);
+
 app.use("/api/studyRecord", studyRecordRouter);
 // app.use("/api/rooms", roomsRouter);
 
 ////
 app.use('/users', usersRouter);
+app.use('/memo',memoRouter);
 ////
 
 app.get("/", (req, res) => {
