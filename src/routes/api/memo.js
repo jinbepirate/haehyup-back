@@ -17,7 +17,7 @@ router.post('/write', auth.authenticate, auth.loginRequired, async (req, res) =>
   }
 });
 
-// Memo 수정 API ( memo의 id를 쿼리 파라미터로 받음 (_id가 아님!!))
+// Memo 수정 API ( memo의 id를 쿼리 파라미터로 받음 (사용자 ID가 아님!!))
 router.put('/update/:id', auth.authenticate, auth.loginRequired, async (req, res) => {
   try {
     const memo = await Memo.findById(req.params.id);
@@ -42,7 +42,7 @@ router.put('/update/:id', auth.authenticate, auth.loginRequired, async (req, res
   }
 });
 
-// Memo 삭제 API ( memo의 id를 쿼리 파라미터로 받음 (_id가 아님!!))
+// Memo 삭제 API ( memo의 id를 쿼리 파라미터로 받음 ( 사용자 id가 아님!!))
 router.delete('/delete/:id', auth.authenticate, auth.loginRequired, async (req, res) => {
   try {
     const memo = await Memo.findById(req.params.id);
@@ -75,7 +75,7 @@ router.get('/read/:id', auth.authenticate, auth.loginRequired, async (req, res) 
       return res.status(404).json({ message: '메모가 존재하지 않습니다.' });
     }
 
-    res.status(200).json(memo);
+    res.status(200).json(memo.contents);
   } catch (err) {
     console.error(err);
     res.status(400).json({ message: '정상적이지 않은 접근입니다.', error: err.message });
@@ -85,7 +85,7 @@ router.get('/read/:id', auth.authenticate, auth.loginRequired, async (req, res) 
 // 특정 사용자가 작성한 모든 메모 조회 API
 router.get('/readall/:userId', auth.authenticate, auth.loginRequired, async (req, res) => {
   try {
-    const memos = await Memo.find({ author: req.params.userId });
+    const memos = await Memo.find({ author: req.params.userId }).select('contents');
 
     if (memos.length === 0) {
       return res.status(404).json({ message: '작성하신 메모가 없습니다.' });
@@ -97,5 +97,22 @@ router.get('/readall/:userId', auth.authenticate, auth.loginRequired, async (req
     res.status(400).json({ message: '비 정상적인 접근입니다.', error: err.message });
   }
 });
+
+// 로그인된 사용자의 메모를 모두 반환하는 API
+router.get('/readallnow', auth.authenticate, auth.loginRequired, async (req, res) => {
+  try {
+    const memos = await Memo.find({ author: req.user._id }).select('contents');
+
+    if (memos.length === 0) {
+      return res.status(404).json({ message: '작성하신 메모가 없습니다.' });
+    }
+
+    res.status(200).json(memos);
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: '비 정상적인 접근입니다.', error: err.message });
+  }
+});
+
 
 module.exports = router;
