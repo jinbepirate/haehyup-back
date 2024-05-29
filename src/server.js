@@ -3,8 +3,8 @@ import axios from "axios";
 import { Server as SocketIO } from "socket.io";
 import https from "https";
 import fs from "fs";
-import cors from "cors"
 import 'regenerator-runtime/runtime';
+
 
 /////////////////
 const mongoose = require('mongoose');
@@ -13,15 +13,50 @@ const serverHost = "https://192.168.219.101"
 
 const usersRouter = require('./routes/api/users');
 // const seaRouter = require('./routes/api/sea');
+
+const session = require("express-session");
+var cookieParser = require('cookie-parser');
+var logger = require('morgan');
+const cors = require("cors");
+
+
 ////////
 const PORT = process.env.PORT || 4000;
 
+dotenv.config();
+
+// router
+const usersRouter = require("./routes/api/users.js");
+const themesRouter = require("./routes/api/themes.js");
+const memoRouter = require("./routes/api/memo");
+const roomRouter = require("./routes/api/room.js");
+const myPageRouter = require("./routes/api/myPage");
+// const studyRecordRouter = require("./routes/api/studyRecord.js");
+
 const app = express();
 
-app.use(cors()); //모든 접근 허용
-app.use(express.json());
+
 app.set("view engine", "pug");
 app.set("views", process.cwd() + "/src/views");
+
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(process.cwd() + "/src/public"));
+app.use(cors()); //모든 접근 허용
+
+app.use(
+  session({
+    secret: process.env.SESSION_SECRET || "secret",
+    resave: true,
+    saveUninitialized: true,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
+  }
+));
 
 /////////////////
 
@@ -38,11 +73,14 @@ mongoose
 
 /////////////////
 app.use("/public", express.static(process.cwd() + "/src/public"));
+app.use("/api/themes", themesRouter);
+
+// app.use("/api/studyRecord", studyRecordRouter);
+app.use("/api/room", roomRouter);
+app.use("/api/myPage", myPageRouter);
 
 ////
-app.use('/users', usersRouter);
-// app.use('/sea',seaRouter);
-////
+
 app.get("/0", (req, res) => {
   res.render("sea")
 });
@@ -50,6 +88,19 @@ app.get("/0", (req, res) => {
 app.get("/1", (req, res) => {
   res.render("forest");
 });
+
+app.use('/api/users', usersRouter);
+app.use('/api/memo',memoRouter);
+////
+
+// app.get("/", (req, res) => {
+//   res.render("home");
+// });
+
+// // app.get("/*", (req, res) => {
+// //   res.redirect("/");
+// // });
+
 
 app.get("/2", (req, res) => {
   res.render("rain");
@@ -64,13 +115,14 @@ app.get("/2", (req, res) => {
 // });
 
 //kakao login
-// const KAKAO_REST_API_KEY = 'a457df9dcc34fd904cdbc9f52a5d5d3d';
-// const KAKAO_REDIRECT_URI = 'http://1.231.165.73:5173/oauth/callback/kakao';
+// const KAKAO_REST_API_KEY = 
+// const KAKAO_REDIRECT_URI = 
 
 // SSL 인증서와 키 파일을 읽어옵니다.
 const privateKey = fs.readFileSync("./private.pem", "utf8");
 const certificate = fs.readFileSync("./public.pem", "utf8");
 const credentials = { key: privateKey, cert: certificate };
+
 
 
 const httpsServer = https.createServer(credentials, app);
@@ -83,6 +135,7 @@ const wsServer = new SocketIO(httpsServer, {
     credentials: true
   }
 });
+
 
 // kakao login
 // app.get('/oauth/callback/kakao', async (req, res) => {

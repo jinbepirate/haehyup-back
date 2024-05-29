@@ -2,3 +2,8 @@
 .DS_Store
 /questionImgs
 /build
+.env
+private.pem
+public.pem
+private3.pem
+public3.pem
