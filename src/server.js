@@ -21,8 +21,9 @@ dotenv.config();
 const usersRouter = require("./routes/api/users.js");
 const themesRouter = require("./routes/api/themes.js");
 const memoRouter = require("./routes/api/memo");
-const studyRecordRouter = require("./routes/api/studyRecord");
-// const roomsRouter = require("./routes/api/rooms");
+const roomRouter = require("./routes/api/room.js");
+const myPageRouter = require("./routes/api/myPage");
+// const studyRecordRouter = require("./routes/api/studyRecord.js");
 
 const app = express();
 
@@ -66,8 +67,9 @@ mongoose
 app.use("/public", express.static(process.cwd() + "/src/public"));
 app.use("/api/themes", themesRouter);
 
-app.use("/api/studyRecord", studyRecordRouter);
-// app.use("/api/rooms", roomsRouter);
+// app.use("/api/studyRecord", studyRecordRouter);
+app.use("/api/room", roomRouter);
+app.use("/api/myPage", myPageRouter);
 
 ////
 app.use('/api/users', usersRouter);
@@ -78,9 +80,9 @@ app.get("/", (req, res) => {
   res.render("home");
 });
 
-app.get("/*", (req, res) => {
-  res.redirect("/");
-});
+// app.get("/*", (req, res) => {
+//   res.redirect("/");
+// });
 
 //kakao login
 // const KAKAO_REST_API_KEY = 
