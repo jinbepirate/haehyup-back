@@ -81,7 +81,7 @@ router.get('/', auth.authenticate, auth.loginRequired, async (req, res, next) =>
     console.error(err);
     res.status(401);
     next(err);
-  }
+  } 
 });
 
 

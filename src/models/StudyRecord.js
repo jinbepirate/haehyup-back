@@ -23,6 +23,23 @@ studyRecordSchema.statics.findByDate = async function(userId, date) {
   return await this.find({ user: userId, startTime: { $gte: startDate, $lte: endDate } });
 };
 
+studyRecordSchema.statics.createStudyRecord = async function(userId, theme) {
+  const studyRecord = new this({
+    startTime: Date.now(),
+    endTime: Date.now(),
+    user: userId,
+    theme: theme,
+  });
+  return await studyRecord.save();
+};
+
+studyRecordSchema.statics.updateStudyRecord = async function(userId, theme) {
+  const latestRecord = await this.findOne({ user: userId, theme: theme }).sort({ endTime: -1 });
+  if (latestRecord) {
+    latestRecord.endTime = Date.now();
+    await latestRecord.save();
+  }
+};
 
 const studyRecord = mongoose.model('StudyRecord', studyRecordSchema);
 module.exports = studyRecord;
