@@ -235,18 +235,18 @@ function leaveRoom() {
 
 function audioPlay(){
   console.log("playBtn Click");
-  const backgroundMusic = new Audio("../audio/sea.mp3");
+  const backgroundMusic = new Audio("../audio/sound-sea.mp3");
   backgroundMusic.loop = true;
   backgroundMusic.volume = 0.5; // 원하는 볼륨으로 설정하세요
   
-  window.onload = function() {
-      backgroundMusic.play().then(data =>{
-        console.log("data");
-      }).catch(error => {
-          console.error("음악을 재생하는 중 오류가 발생했습니다:", error);
-      });
-  };
+  console.log("window in");
+    backgroundMusic.play().then(data =>{
+      console.log("data");
+    }).catch(error => {
+        console.error("음악을 재생하는 중 오류가 발생했습니다:", error);
+    });
 }
+playBtn.addEventListener("click",audioPlay);
 
 function removeVideo(leavedSocketId) {
   console.log("removeVide");
@@ -277,7 +277,7 @@ function clearAllChat() {
 }
 
 leaveBtn.addEventListener("click", leaveRoom);
-playBtn.addEventListener("click",audioPlay);
+
 
 // Modal code
 
