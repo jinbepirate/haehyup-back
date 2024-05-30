@@ -10,9 +10,7 @@ import 'regenerator-runtime/runtime';
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-const serverHost = "https://15.164.48.114"
-// const serverHost = "https://172.16.1.238"
-
+const serverHost = "https://15.164.48.114:4000"
 
 // const seaRouter = require('./routes/api/sea');
 

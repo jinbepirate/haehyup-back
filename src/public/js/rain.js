@@ -1,4 +1,7 @@
-const socket = io("https://172.16.1.238:4000");
+// import {postMemo} from './api/memo.js'
+// const {postMemo} = import("./api/memo.js");
+
+const socket = io("https://15.164.48.114:4000");
 
 
 const myFace = document.querySelector("#myFace");
@@ -23,7 +26,6 @@ unCameraIcon.classList.add(HIDDEN_CN);
 let roomName = "";
 let nickname = "";
 let peopleInRoom = 1;
-
 
 
 
@@ -196,11 +198,17 @@ function handleChatSubmit(event) {
   const message = chatInput.value;
   chatInput.value = "";
   socket.emit("chat", `${nickname}: ${message}`, roomName);
-  writeChat(`You: ${message}`, MYCHAT_CN);
+  writeChat(`${message}`, MYCHAT_CN);
 }
 
 function writeChat(message, className = null) {
   console.log("writeChat");
+  // postMemo("ww").then((resp)=>{
+  //   console.log("suucess");
+  // }).catch(err=>{
+  //   console.log(`error : ${err}`)
+  // })
+  
   const li = document.createElement("li");
   const span = document.createElement("span");
   span.innerText = message;
@@ -212,6 +220,7 @@ function writeChat(message, className = null) {
 // Leave Room
 
 const leaveBtn = document.querySelector("#leave");
+const playBtn = document.querySelector("#audio")
 
 function leaveRoom() {
   console.log("leaveRoom");
@@ -232,6 +241,21 @@ function leaveRoom() {
   clearAllVideos();
   clearAllChat();
 }
+
+function audioPlay(){
+  console.log("playBtn Click");
+  const backgroundMusic = new Audio("../audio/sound-rain.mp3");
+  backgroundMusic.loop = true;
+  backgroundMusic.volume = 0.5; // 원하는 볼륨으로 설정하세요
+  
+  console.log("window in");
+    backgroundMusic.play().then(data =>{
+      console.log("data");
+    }).catch(error => {
+        console.error("음악을 재생하는 중 오류가 발생했습니다:", error);
+    });
+}
+playBtn.addEventListener("click",audioPlay);
 
 function removeVideo(leavedSocketId) {
   console.log("removeVide");
@@ -262,6 +286,7 @@ function clearAllChat() {
 }
 
 leaveBtn.addEventListener("click", leaveRoom);
+
 
 // Modal code
 
@@ -310,7 +335,7 @@ socket.on("accept_join", async (userObjArr) => {
     return;
   }
 
-  writeChat("Notice!", NOTICE_CN);
+  writeChat("알림!", NOTICE_CN);
   for (let i = 0; i < length - 1; ++i) {
     try {
       const newPC = createConnection(
@@ -320,12 +345,12 @@ socket.on("accept_join", async (userObjArr) => {
       const offer = await newPC.createOffer();
       await newPC.setLocalDescription(offer);
       socket.emit("offer", offer, userObjArr[i].socketId, nickname);
-      writeChat(`__${userObjArr[i].nickname}__`, NOTICE_CN);
+      // writeChat(`__${userObjArr[i].nickname}__`, NOTICE_CN);
     } catch (err) {
       console.error(err);
     }
   }
-  writeChat("is in the room.", NOTICE_CN);
+  // writeChat("is in the room.", NOTICE_CN);
 });
 
 socket.on("offer", async (offer, remoteSocketId, remoteNickname) => {
@@ -335,7 +360,8 @@ socket.on("offer", async (offer, remoteSocketId, remoteNickname) => {
     const answer = await newPC.createAnswer();
     await newPC.setLocalDescription(answer);
     socket.emit("answer", answer, remoteSocketId);
-    writeChat(`notice! __${remoteNickname}__ joined the room`, NOTICE_CN);
+    // writeChat(`notice! __${remoteNickname}__ joined the room`, NOTICE_CN);
+    // writeChat(`${remoteNickname}님이 입장하였습니다.`, NOTICE_CN);
   } catch (err) {
     console.error(err);
   }
@@ -355,7 +381,8 @@ socket.on("chat", (message) => {
 
 socket.on("leave_room", (leavedSocketId, nickname) => {
   removeVideo(leavedSocketId);
-  writeChat(`notice! ${nickname} leaved the room.`, NOTICE_CN);
+  // writeChat(`notice! ${nickname} leaved the room.`, NOTICE_CN);
+  // writeChat(`${nickname}님이 떠났습니다.`, NOTICE_CN);
   --peopleInRoom;
   sortStreams();
 });
@@ -434,4 +461,4 @@ function sortStreams() {
   const streamArr = streams.querySelectorAll("div");
   streamArr.forEach((stream) => (stream.className = `people${peopleInRoom}`));
 }
-socket.emit("join_room", "rain", "user");
+socket.emit("join_room", "rain", "");
