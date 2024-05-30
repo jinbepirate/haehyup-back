@@ -9,9 +9,8 @@ import 'regenerator-runtime/runtime';
 /////////////////
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const serverHost = "https://192.168.219.101"
+const serverHost = "https://172.16.1.238"
 
-const usersRouter = require('./routes/api/users');
 // const seaRouter = require('./routes/api/sea');
 
 const session = require("express-session");

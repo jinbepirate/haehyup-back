@@ -1,4 +1,4 @@
-const socket = io("https://192.168.219.101:4000");
+const socket = io("https://172.16.1.238:4000");
 
 
 const myFace = document.querySelector("#myFace");
