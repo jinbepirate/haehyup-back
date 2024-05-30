@@ -37,7 +37,8 @@ router.get('/', auth.authenticate, auth.loginRequired, async (req, res, next) =>
     // user 정보
     const user = await User.findById(req.user._id);
     const userObj = {
-      uname: user.uid
+      uname: user.uid,
+      userImgId : user.userImgId
     };
     // themeRecord 정보
     const themeRecord = {};
