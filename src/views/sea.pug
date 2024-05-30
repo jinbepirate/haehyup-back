@@ -4,21 +4,23 @@ html(lang="en")
         meta(charset="UTF-8")
         meta(http-equiv="X-UA-Compatible", content="IE=edge")
         meta(name="viewport", content="width=device-width, initial-scale=1.0")
-        link(rel="stylesheet", href="https://use.fontawesome.com/releases/v5.15.4/css/all.css", integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm", crossorigin="anonymous")
+        link(rel="stylesheet", href="http//use.fontawesome.com/releases/v5.15.4/css/all.css", integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm", crossorigin="anonymous")
         //- link(rel="stylesheet", href="https://unpkg.com/mvp.css")
-        link(rel="stylesheet", href="./public/css/style.css")
+        link(rel="stylesheet", href="./public/css/style-sea.css")
         title Yoom
-    body 
+    body(class="background-image")
+        
         header
             i(class="fab fa-pied-piper-square fa-2x")
-            h1 Yoom
+            h1 haehyup-Sea ROOM
         main
+            //- img(src='/public/gif-file/rain.gif')
             div#welcome 
+                
                 form
                     input#roomName(type="text", required, placeholder="Room Name")
                     input#nickname(type="text", required, placeholder="Your Nickname")
                     button Enter Room
-
             div#call(class="call")
                 div#streamBox
                     div#streams
@@ -38,11 +40,14 @@ html(lang="en")
                                     i(class="fas fa-video-slash fa-2x unCameraIcon")
                         div#controlers__column
                             button#leave Leave
+                            button#audio 재생
                 div#chatRoom
                     ul#chatBox
                     form#chatForm
-                        input(required, type="text", placeholder="Write your chat")
-                        button Send
+                        input(required, type="text", placeholder="메모 입력")
+                        button 저장
+                
+            
         aside.modal.hidden
             div.modal__box
                 h2.modal__text
