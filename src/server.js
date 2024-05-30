@@ -10,7 +10,7 @@ import 'regenerator-runtime/runtime';
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 
-const serverHost = "https://15.164.48.114:4000"
+const serverHost = "https://elandland.site"
 
 // const seaRouter = require('./routes/api/sea');
 
@@ -59,7 +59,7 @@ app.use(
 ));
 
 app.use(cors({
-  origin: 'http://172.16.1.90:5173', // 허용할 클라이언트 도메인
+  origin: 'http://15.164.48.114:5177', // 허용할 클라이언트 도메인
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true // 자격 증명 허용
 }));

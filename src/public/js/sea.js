@@ -1,7 +1,7 @@
 // import {postMemo} from './api/memo.js'
 // const {postMemo} = import("./api/memo.js");
 
-const socket = io("https://15.164.48.114:4000");
+const socket = io("https://elandland.site");
 
 
 const myFace = document.querySelector("#myFace");
