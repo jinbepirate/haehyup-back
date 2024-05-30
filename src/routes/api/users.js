@@ -30,7 +30,10 @@ router.post('/login', async (req, res, next) => {
     res.cookie("authToken", token, {
       httpOnly: true,
       maxAge: tokenMaxAge * 1000,
+      secure: true, // HTTPS 사용 시 true
+      sameSite: 'none' // 크로스 도메인 요청 허용
     });
+    
     console.log(user);
     res.status(201).json(user);
   } catch (err) {
@@ -61,7 +64,7 @@ router.get('/me', auth.authenticate, auth.loginRequired, async (req, res) => {
     const user = await User.findById(req.user._id).select('-password -__v');
     if (!user) {
       return res.status(404).json({ message: '로그인을 먼저 해주세요.' });
-    }
+    } 
     res.status(200).json(user);
   } catch (err) {
     console.error(err);
