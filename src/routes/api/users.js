@@ -72,4 +72,3 @@ router.get('/me', auth.authenticate, auth.loginRequired, async (req, res) => {
   }
 });
 
-module.exports = router;
