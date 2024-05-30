@@ -1,4 +1,7 @@
-const socket = io("https://172.16.1.238:4000");
+// import {postMemo} from './api/memo.js'
+// const {postMemo} = import("./api/memo.js");
+
+const socket = io("https://15.164.48.114:4000");
 
 
 const myFace = document.querySelector("#myFace");
@@ -200,6 +203,12 @@ function handleChatSubmit(event) {
 
 function writeChat(message, className = null) {
   console.log("writeChat");
+  // postMemo("ww").then((resp)=>{
+  //   console.log("suucess");
+  // }).catch(err=>{
+  //   console.log(`error : ${err}`)
+  // })
+  
   const li = document.createElement("li");
   const span = document.createElement("span");
   span.innerText = message;
@@ -352,7 +361,7 @@ socket.on("offer", async (offer, remoteSocketId, remoteNickname) => {
     await newPC.setLocalDescription(answer);
     socket.emit("answer", answer, remoteSocketId);
     // writeChat(`notice! __${remoteNickname}__ joined the room`, NOTICE_CN);
-    writeChat(`${remoteNickname}님이 입장하였습니다.`, NOTICE_CN);
+    // writeChat(`${remoteNickname}님이 입장하였습니다.`, NOTICE_CN);
   } catch (err) {
     console.error(err);
   }
@@ -373,7 +382,7 @@ socket.on("chat", (message) => {
 socket.on("leave_room", (leavedSocketId, nickname) => {
   removeVideo(leavedSocketId);
   // writeChat(`notice! ${nickname} leaved the room.`, NOTICE_CN);
-  writeChat(`${nickname}님이 떠났습니다.`, NOTICE_CN);
+  // writeChat(`${nickname}님이 떠났습니다.`, NOTICE_CN);
   --peopleInRoom;
   sortStreams();
 });
@@ -452,4 +461,4 @@ function sortStreams() {
   const streamArr = streams.querySelectorAll("div");
   streamArr.forEach((stream) => (stream.className = `people${peopleInRoom}`));
 }
-socket.emit("join_room", "forest", "user");
+socket.emit("join_room", "forest", "");
