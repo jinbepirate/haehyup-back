@@ -45,7 +45,6 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(process.cwd() + "/src/public"));
-app.use(cors()); //모든 접근 허용
 
 app.use(
   session({
@@ -54,10 +53,17 @@ app.use(
     saveUninitialized: true,
     cookie: {
       httpOnly: true,
-      secure: false,
+      secure: true, // HTTPS 사용 시 true
+      sameSite: 'none' // 크로스 도메인 요청 허용
     },
   }
 ));
+
+app.use(cors({
+  origin: 'http://172.16.1.90:5173', // 허용할 클라이언트 도메인
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: true // 자격 증명 허용
+}));
 
 /////////////////
 
@@ -132,7 +138,9 @@ const wsServer = new SocketIO(httpsServer, {
     origin: `${serverHost}:4000`,  // 허용할 도메인 설정
     // origin: "*",  // 허용할 도메인 설정
     // origin: "https://172.16.1.238:5177",  // 허용할 도메인 설정
-    methods: ["GET", "POST"],
+    //origin : 'http://172.16.1.90:5173',
+    
+    methods: ["GET", "POST","PUT","DELETE"],
     credentials: true
   }
 });
