@@ -27,7 +27,6 @@ let peopleInRoom = 1;
 
 
 
-
 let pcObj = {
   // remoteSocketId: pc
 };
@@ -212,6 +211,7 @@ function writeChat(message, className = null) {
 // Leave Room
 
 const leaveBtn = document.querySelector("#leave");
+const playBtn = document.querySelector("#audio")
 
 function leaveRoom() {
   console.log("leaveRoom");
@@ -232,6 +232,21 @@ function leaveRoom() {
   clearAllVideos();
   clearAllChat();
 }
+
+function audioPlay(){
+  console.log("playBtn Click");
+  const backgroundMusic = new Audio("../audio/sound-rain.mp3");
+  backgroundMusic.loop = true;
+  backgroundMusic.volume = 0.5; // 원하는 볼륨으로 설정하세요
+  
+  console.log("window in");
+    backgroundMusic.play().then(data =>{
+      console.log("data");
+    }).catch(error => {
+        console.error("음악을 재생하는 중 오류가 발생했습니다:", error);
+    });
+}
+playBtn.addEventListener("click",audioPlay);
 
 function removeVideo(leavedSocketId) {
   console.log("removeVide");
@@ -262,6 +277,7 @@ function clearAllChat() {
 }
 
 leaveBtn.addEventListener("click", leaveRoom);
+
 
 // Modal code
 
