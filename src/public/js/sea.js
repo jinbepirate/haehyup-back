@@ -1,4 +1,4 @@
-const socket = io("https://192.168.219.101:4000");
+const socket = io("https://172.16.1.238:4000");
 
 
 const myFace = document.querySelector("#myFace");
@@ -23,7 +23,6 @@ unCameraIcon.classList.add(HIDDEN_CN);
 let roomName = "";
 let nickname = "";
 let peopleInRoom = 1;
-
 
 
 
@@ -212,6 +211,7 @@ function writeChat(message, className = null) {
 // Leave Room
 
 const leaveBtn = document.querySelector("#leave");
+const playBtn = document.querySelector("#audio")
 
 function leaveRoom() {
   console.log("leaveRoom");
@@ -231,6 +231,21 @@ function leaveRoom() {
   myFace.srcObject = null;
   clearAllVideos();
   clearAllChat();
+}
+
+function audioPlay(){
+  console.log("playBtn Click");
+  const backgroundMusic = new Audio("../audio/sea.mp3");
+  backgroundMusic.loop = true;
+  backgroundMusic.volume = 0.5; // 원하는 볼륨으로 설정하세요
+  
+  window.onload = function() {
+      backgroundMusic.play().then(data =>{
+        console.log("data");
+      }).catch(error => {
+          console.error("음악을 재생하는 중 오류가 발생했습니다:", error);
+      });
+  };
 }
 
 function removeVideo(leavedSocketId) {
@@ -262,6 +277,7 @@ function clearAllChat() {
 }
 
 leaveBtn.addEventListener("click", leaveRoom);
+playBtn.addEventListener("click",audioPlay);
 
 // Modal code
 
