@@ -59,7 +59,7 @@ app.use(
 ));
 
 app.use(cors({
-  origin: 'http://15.164.48.114:5177', // 허용할 클라이언트 도메인
+  origin: 'http://15.164.48.114:5175', // 허용할 클라이언트 도메인
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   credentials: true // 자격 증명 허용
 }));
